@@ -1,5 +1,4 @@
 import express from 'express';
-import storage from './memory_storage.js';
 import cors from 'cors';
 
 import connect from './db.js';
