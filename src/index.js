@@ -2,6 +2,8 @@ import express from 'express';
 import storage from './memory_storage.js';
 import cors from 'cors';
 
+import connect from './db.js';
+
 const app = express(); // instanciranje aplikacije
 const port = 3000; // port na kojem će web server slušati
 
@@ -163,25 +165,114 @@ app.get('/reservation/:id', (req, res) => {
 });
 
 // Get all.
-app.get('/users', (_, res) => res.json(storage.users));
-app.get('/wash-steps', (_, res) => res.json(storage.washSteps));
-app.get('/wash-programs', (_, res) => res.json(storage.washPrograms));
-app.get('/locations', (_, res) => res.json(storage.locations));
+app.get('/users', async (_, res) => {
+	try {
+		const db = await connect();
+		const cursor = await db.collection('users').find();
+		const results = await cursor.toArray();
 
-app.get('/reservations', (req, res) => {
-	let items = storage.reservations;
+		res.json({
+			status: 'ok',
+			error: null,
+			data: results,
+		});
+	} catch (error) {
+		res.json({
+			status: 'error',
+			error: error,
+			data: null,
+		});
+	}
+});
 
+app.get('/wash-steps', async (_, res) => {
+	try {
+		const db = await connect();
+		const cursor = await db.collection('washSteps').find();
+		const results = await cursor.toArray();
+
+		res.json({
+			status: 'ok',
+			error: null,
+			data: results,
+		});
+	} catch (error) {
+		res.json({
+			status: 'error',
+			error: error,
+			data: null,
+		});
+	}
+});
+
+app.get('/wash-programs', async (_, res) => {
+	try {
+		const db = await connect();
+		const cursor = await db.collection('washPrograms').find();
+		const results = await cursor.toArray();
+
+		res.json({
+			status: 'ok',
+			error: null,
+			data: results,
+		});
+	} catch (error) {
+		res.json({
+			status: 'error',
+			error: error,
+			data: null,
+		});
+	}
+});
+
+app.get('/locations', async (_, res) => {
+	try {
+		const db = await connect();
+		const cursor = await db.collection('locations').find();
+		const results = await cursor.toArray();
+
+		res.json({
+			status: 'ok',
+			error: null,
+			data: results,
+		});
+	} catch (error) {
+		res.json({
+			status: 'error',
+			error: error,
+			data: null,
+		});
+	}
+});
+
+app.get('/reservations', async (req, res) => {
 	const query = req.query;
 
-	if (query.day) {
-		items = items.filter((item) => item.date === query.day);
+	let dbQuery = {};
+
+	if (query.date) {
+		dbQuery = {
+			date: query.date,
+		};
 	}
 
-	res.json({
-		status: 'ok',
-		error: null,
-		data: items,
-	});
+	try {
+		const db = await connect();
+		const cursor = await db.collection('reservations').find(dbQuery);
+		const results = await cursor.toArray();
+
+		res.json({
+			status: 'ok',
+			error: null,
+			data: results,
+		});
+	} catch (error) {
+		res.json({
+			status: 'error',
+			error: error,
+			data: null,
+		});
+	}
 });
 
 app.listen(port, () => console.log(`\n\n[DONE] Backend se vrti na http://localhost:${port}/\n\n`));
