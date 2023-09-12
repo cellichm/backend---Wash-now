@@ -42,19 +42,19 @@ let storage = {
 			id: 1,
 			name: 'Standardno pranje',
 			steps: [1, 2, 4],
-			durationMinutes: 50,
+			totalDurationMinutes: 50,
 		},
 		{
 			id: 2,
 			name: 'Ispiranje',
 			steps: [1],
-			durationMinutes: 5,
+			totalDurationMinutes: 5,
 		},
 		{
 			id: 2,
 			name: 'Ispiranje + vosak',
 			steps: [1, 4],
-			durationMinutes: 35,
+			totalDurationMinutes: 35,
 		}
 	],
 	locations: [
@@ -66,8 +66,9 @@ let storage = {
 			contact: '+38552123456',
 		}
 	],
-	orders: [
+	reservations: [
 		{
+			id: 1,
 			location: 'pula-city-mall',
 			user: 'mcellich',
 			date: '2023-09-10',
