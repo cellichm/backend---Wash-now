@@ -9,12 +9,12 @@ const port = 3000; // port na kojem će web server slušati
 
 app.use(cors());
 
-app.get('/', (req, res) => {
+app.get('/', (_, res) => {
 	res.json({ status: 'Radi :)' });
 });
 
 // Get by ID.
-app.get('/user/:username', (req, res) => {
+app.get('/user/:username', async (req, res) => {
 	const username = req.params.username;
 
 	if (!username) {
@@ -26,7 +26,21 @@ app.get('/user/:username', (req, res) => {
 		return;
 	}
 
-	const user = storage.users.find((user) => user.username === username);
+	let user;
+
+	try {
+		const db = await connect();
+		user = await db.collection('users').findOne({
+			username: username,
+		});
+	} catch (error) {
+		res.json({
+			status: 'error',
+			error: error,
+			data: null,
+		});
+		return;
+	}
 
 	if (!user) {
 		res.json({
@@ -44,7 +58,7 @@ app.get('/user/:username', (req, res) => {
 	});
 });
 
-app.get('/wash-step/:id', (req, res) => {
+app.get('/wash-step/:id', async (req, res) => {
 	const id = parseInt(req.params.id);
 
 	if (isNaN(id)) {
@@ -56,13 +70,27 @@ app.get('/wash-step/:id', (req, res) => {
 		return;
 	}
 
-	const result = storage.washSteps.find((item) => item.id === id);
+	let item;
 
-	if (!result) {
+	try {
+		const db = await connect();
+		item = await db.collection('washSteps').findOne({
+			id: id,
+		});
+	} catch (error) {
+		res.json({
+			status: 'error',
+			error: error,
+			data: null,
+		});
+		return;
+	}
+
+	if (!item) {
 		res.json({
 			status: 'ok',
 			error: null,
-			data: `No wash steps found with id "${id}".`,
+			data: `No wash steps found with ID "${username}".`,
 		});
 		return;
 	}
@@ -70,11 +98,11 @@ app.get('/wash-step/:id', (req, res) => {
 	res.json({
 		status: 'ok',
 		error: null,
-		data: result,
+		data: item,
 	});
 });
 
-app.get('/wash-program/:id', (req, res) => {
+app.get('/wash-program/:id', async (req, res) => {
 	const id = parseInt(req.params.id);
 
 	if (isNaN(id)) {
@@ -86,13 +114,27 @@ app.get('/wash-program/:id', (req, res) => {
 		return;
 	}
 
-	const result = storage.washPrograms.find((item) => item.id === id);
+	let item;
 
-	if (!result) {
+	try {
+		const db = await connect();
+		item = await db.collection('washPrograms').findOne({
+			id: id,
+		});
+	} catch (error) {
+		res.json({
+			status: 'error',
+			error: error,
+			data: null,
+		});
+		return;
+	}
+
+	if (!item) {
 		res.json({
 			status: 'ok',
 			error: null,
-			data: `No wash programs found with id "${id}".`,
+			data: `No wash programs found with ID "${username}".`,
 		});
 		return;
 	}
@@ -100,11 +142,11 @@ app.get('/wash-program/:id', (req, res) => {
 	res.json({
 		status: 'ok',
 		error: null,
-		data: result,
+		data: item,
 	});
 });
 
-app.get('/location/:id', (req, res) => {
+app.get('/location/:id', async (req, res) => {
 	const id = parseInt(req.params.id);
 
 	if (isNaN(id)) {
@@ -116,13 +158,27 @@ app.get('/location/:id', (req, res) => {
 		return;
 	}
 
-	const result = storage.locations.find((item) => item.id === id);
+	let item;
 
-	if (!result) {
+	try {
+		const db = await connect();
+		item = await db.collection('locations').findOne({
+			id: id,
+		});
+	} catch (error) {
+		res.json({
+			status: 'error',
+			error: error,
+			data: null,
+		});
+		return;
+	}
+
+	if (!item) {
 		res.json({
 			status: 'ok',
 			error: null,
-			data: `No locations found with id "${id}".`,
+			data: `No locations found with ID "${username}".`,
 		});
 		return;
 	}
@@ -130,11 +186,11 @@ app.get('/location/:id', (req, res) => {
 	res.json({
 		status: 'ok',
 		error: null,
-		data: result,
+		data: item,
 	});
 });
 
-app.get('/reservation/:id', (req, res) => {
+app.get('/reservation/:id', async (req, res) => {
 	const id = parseInt(req.params.id);
 
 	if (isNaN(id)) {
@@ -146,13 +202,27 @@ app.get('/reservation/:id', (req, res) => {
 		return;
 	}
 
-	const result = storage.reservations.find((item) => item.id === id);
+	let item;
 
-	if (!result) {
+	try {
+		const db = await connect();
+		item = await db.collection('reservations').findOne({
+			id: id,
+		});
+	} catch (error) {
+		res.json({
+			status: 'error',
+			error: error,
+			data: null,
+		});
+		return;
+	}
+
+	if (!item) {
 		res.json({
 			status: 'ok',
 			error: null,
-			data: `No reservation found with id "${id}".`,
+			data: `No reservations found with ID "${username}".`,
 		});
 		return;
 	}
@@ -160,7 +230,7 @@ app.get('/reservation/:id', (req, res) => {
 	res.json({
 		status: 'ok',
 		error: null,
-		data: result,
+		data: item,
 	});
 });
 
