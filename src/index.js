@@ -4,6 +4,8 @@ const mongo = require('mongodb');
 
 import connect from './db.js';
 
+import auth from './auth.js';
+
 const app = express(); // instanciranje aplikacije
 const port = 3000; // port na kojem će web server slušati
 
@@ -12,9 +14,39 @@ app.use(cors());
 // Needed to process JSON request body properly.
 app.use(express.json());
 
-
 app.get('/', (_, res) => {
 	res.json({ status: 'Radi :)' });
+});
+
+// Auth/JWT.
+app.post('/users', async (req, res) => {
+	const document = req.body;
+
+	if (!document) {
+		res.json({
+			status: 'error',
+			error: 'New entry not provided. Send it as JSON in request body.',
+			data: null,
+		});
+		return;
+	}
+
+	let id;
+
+	try {
+		id = await auth.registerUser(document);
+	} catch (error) {
+		res.status(500).json({
+			status: 'error',
+			error: error.message,
+			data: null,
+		});
+	}
+
+	res.json({
+		status: 'ok',
+		data: id,
+	});
 });
 
 // Deletes.
@@ -430,45 +462,6 @@ app.patch('/wash-step/:id', async (req, res) => {
 });
 
 // Inserts.
-app.post('/users', async (req, res) => {
-	const document = req.body;
-
-	if (!document) {
-		res.json({
-			status: 'error',
-			error: 'New entry not provided. Send it as JSON in request body.',
-			data: null,
-		});
-		return;
-	}
-
-	try {
-		const db = await connect();
-		const result = await db.collection('users').insertOne(document);
-
-		if (result.insertedId) {
-			res.json({
-				status: 'ok',
-				data: {
-					mongoId: result.insertedId,
-				},
-			});
-		} else {
-			res.json({
-				status: 'error',
-				error: 'Failed to insert.',
-				data: result,
-			});
-		}
-	} catch (error) {
-		res.json({
-			status: 'error',
-			error: error,
-			data: null,
-		});
-	}
-});
-
 app.post('/locations', async (req, res) => {
 	const document = req.body;
 
