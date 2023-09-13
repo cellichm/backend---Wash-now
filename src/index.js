@@ -17,6 +17,202 @@ app.get('/', (_, res) => {
 	res.json({ status: 'Radi :)' });
 });
 
+// Deletes.
+app.delete('/user/:id', async (req, res) => {
+	const id = req.params.id;
+
+	if (!id) {
+		res.json({
+			status: 'error',
+			error: 'ID for deletion not provided.',
+			data: null,
+		});
+		return;
+	}
+
+	try {
+		const db = await connect();
+		const result = await db.collection('users').deleteOne(
+			{ _id: new mongo.ObjectId(id) }
+		);
+
+		if (result.deletedCount) {
+			res.json({
+				status: 'ok',
+				data: result,
+			});
+		} else {
+			res.json({
+				status: 'error',
+				error: 'Failed to delete.',
+				data: result,
+			});
+		}
+	} catch (error) {
+		res.json({
+			status: 'error',
+			error: error,
+			data: null,
+		});
+	}
+});
+
+app.delete('/location/:id', async (req, res) => {
+	const id = req.params.id;
+
+	if (!id) {
+		res.json({
+			status: 'error',
+			error: 'ID for deletion not provided.',
+			data: null,
+		});
+		return;
+	}
+
+	try {
+		const db = await connect();
+		const result = await db.collection('locations').deleteOne(
+			{ _id: new mongo.ObjectId(id) }
+		);
+
+		if (result.deletedCount) {
+			res.json({
+				status: 'ok',
+				data: result,
+			});
+		} else {
+			res.json({
+				status: 'error',
+				error: 'Failed to delete.',
+				data: result,
+			});
+		}
+	} catch (error) {
+		res.json({
+			status: 'error',
+			error: error,
+			data: null,
+		});
+	}
+});
+
+app.delete('/reservation/:id', async (req, res) => {
+	const id = req.params.id;
+
+	if (!id) {
+		res.json({
+			status: 'error',
+			error: 'ID for deletion not provided.',
+			data: null,
+		});
+		return;
+	}
+
+	try {
+		const db = await connect();
+		const result = await db.collection('reservations').deleteOne(
+			{ _id: new mongo.ObjectId(id) }
+		);
+
+		if (result.deletedCount) {
+			res.json({
+				status: 'ok',
+				data: result,
+			});
+		} else {
+			res.json({
+				status: 'error',
+				error: 'Failed to delete.',
+				data: result,
+			});
+		}
+	} catch (error) {
+		res.json({
+			status: 'error',
+			error: error,
+			data: null,
+		});
+	}
+});
+
+app.delete('/wash-program/:id', async (req, res) => {
+	const id = req.params.id;
+
+	if (!id) {
+		res.json({
+			status: 'error',
+			error: 'ID for deletion not provided.',
+			data: null,
+		});
+		return;
+	}
+
+	try {
+		const db = await connect();
+		const result = await db.collection('washPrograms').deleteOne(
+			{ _id: new mongo.ObjectId(id) }
+		);
+
+		if (result.deletedCount) {
+			res.json({
+				status: 'ok',
+				data: result,
+			});
+		} else {
+			res.json({
+				status: 'error',
+				error: 'Failed to delete.',
+				data: result,
+			});
+		}
+	} catch (error) {
+		res.json({
+			status: 'error',
+			error: error,
+			data: null,
+		});
+	}
+});
+
+app.delete('/wash-step/:id', async (req, res) => {
+	const id = req.params.id;
+
+	if (!id) {
+		res.json({
+			status: 'error',
+			error: 'ID for deletion not provided.',
+			data: null,
+		});
+		return;
+	}
+
+	try {
+		const db = await connect();
+		const result = await db.collection('washSteps').deleteOne(
+			{ _id: new mongo.ObjectId(id) }
+		);
+
+		if (result.deletedCount) {
+			res.json({
+				status: 'ok',
+				data: result,
+			});
+		} else {
+			res.json({
+				status: 'error',
+				error: 'Failed to delete.',
+				data: result,
+			});
+		}
+	} catch (error) {
+		res.json({
+			status: 'error',
+			error: error,
+			data: null,
+		});
+	}
+});
+
 // Patches.
 app.patch('/user/:id', async (req, res) => {
 	const document = req.body;
