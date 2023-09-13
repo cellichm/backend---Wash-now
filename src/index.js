@@ -8,8 +8,208 @@ const port = 3000; // port na kojem će web server slušati
 
 app.use(cors());
 
+// Needed to process JSON request body properly.
+app.use(express.json());
+
+
 app.get('/', (_, res) => {
 	res.json({ status: 'Radi :)' });
+});
+
+// Inserts.
+app.post('/users', async (req, res) => {
+	const document = req.body;
+
+	if (!document) {
+		res.json({
+			status: 'error',
+			error: 'New entry not provided. Send it as JSON in request body.',
+			data: null,
+		});
+		return;
+	}
+
+	try {
+		const db = await connect();
+		const result = await db.collection('users').insertOne(document);
+
+		if (result.insertedId) {
+			res.json({
+				status: 'ok',
+				data: {
+					mongoId: result.insertedId,
+				},
+			});
+		} else {
+			res.json({
+				status: 'error',
+				error: 'Failed to insert.',
+				data: result,
+			});
+		}
+	} catch (error) {
+		res.json({
+			status: 'error',
+			error: error,
+			data: null,
+		});
+	}
+});
+
+app.post('/locations', async (req, res) => {
+	const document = req.body;
+
+	if (!document) {
+		res.json({
+			status: 'error',
+			error: 'New entry not provided. Send it as JSON in request body.',
+			data: null,
+		});
+		return;
+	}
+
+	try {
+		const db = await connect();
+		const result = await db.collection('locations').insertOne(document);
+
+		if (result.insertedId) {
+			res.json({
+				status: 'ok',
+				data: {
+					mongoId: result.insertedId,
+				},
+			});
+		} else {
+			res.json({
+				status: 'error',
+				error: 'Failed to insert.',
+				data: result,
+			});
+		}
+	} catch (error) {
+		res.json({
+			status: 'error',
+			error: error,
+			data: null,
+		});
+	}
+});
+
+app.post('/reservations', async (req, res) => {
+	const document = req.body;
+
+	if (!document) {
+		res.json({
+			status: 'error',
+			error: 'New entry not provided. Send it as JSON in request body.',
+			data: null,
+		});
+		return;
+	}
+
+	try {
+		const db = await connect();
+		const result = await db.collection('reservations').insertOne(document);
+
+		if (result.insertedId) {
+			res.json({
+				status: 'ok',
+				data: {
+					mongoId: result.insertedId,
+				},
+			});
+		} else {
+			res.json({
+				status: 'error',
+				error: 'Failed to insert.',
+				data: result,
+			});
+		}
+	} catch (error) {
+		res.json({
+			status: 'error',
+			error: error,
+			data: null,
+		});
+	}
+});
+
+app.post('/wash-programs', async (req, res) => {
+	const document = req.body;
+
+	if (!document) {
+		res.json({
+			status: 'error',
+			error: 'New entry not provided. Send it as JSON in request body.',
+			data: null,
+		});
+		return;
+	}
+
+	try {
+		const db = await connect();
+		const result = await db.collection('washPrograms').insertOne(document);
+
+		if (result.insertedId) {
+			res.json({
+				status: 'ok',
+				data: {
+					mongoId: result.insertedId,
+				},
+			});
+		} else {
+			res.json({
+				status: 'error',
+				error: 'Failed to insert.',
+				data: result,
+			});
+		}
+	} catch (error) {
+		res.json({
+			status: 'error',
+			error: error,
+			data: null,
+		});
+	}
+});
+
+app.post('/wash-steps', async (req, res) => {
+	const document = req.body;
+
+	if (!document) {
+		res.json({
+			status: 'error',
+			error: 'New entry not provided. Send it as JSON in request body.',
+			data: null,
+		});
+		return;
+	}
+
+	try {
+		const db = await connect();
+		const result = await db.collection('washSteps').insertOne(document);
+
+		if (result.insertedId) {
+			res.json({
+				status: 'ok',
+				data: {
+					mongoId: result.insertedId,
+				},
+			});
+		} else {
+			res.json({
+				status: 'error',
+				error: 'Failed to insert.',
+				data: result,
+			});
+		}
+	} catch (error) {
+		res.json({
+			status: 'error',
+			error: error,
+			data: null,
+		});
+	}
 });
 
 // Get by ID.
