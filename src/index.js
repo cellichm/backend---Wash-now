@@ -1,5 +1,6 @@
 import express from 'express';
 import cors from 'cors';
+const mongo = require('mongodb');
 
 import connect from './db.js';
 
@@ -14,6 +15,222 @@ app.use(express.json());
 
 app.get('/', (_, res) => {
 	res.json({ status: 'Radi :)' });
+});
+
+// Patches.
+app.patch('/user/:id', async (req, res) => {
+	const document = req.body;
+	delete document._id;
+
+	const id = req.params.id;
+
+	if (!document) {
+		res.json({
+			status: 'error',
+			error: 'Data to update not provided. Send it as JSON in request body.',
+			data: null,
+		});
+		return;
+	}
+
+	try {
+		const db = await connect();
+		const result = await db.collection('users').updateOne(
+			{ _id: new mongo.ObjectId(id) },
+			{ $set: document }
+		);
+
+		if (result.modifiedCount) {
+			res.json({
+				status: 'ok',
+				data: result,
+			});
+		} else {
+			res.json({
+				status: 'error',
+				error: 'Failed to update.',
+				data: result,
+			});
+		}
+	} catch (error) {
+		res.json({
+			status: 'error',
+			error: error,
+			data: null,
+		});
+	}
+});
+
+app.patch('/location/:id', async (req, res) => {
+	const document = req.body;
+	delete document._id;
+
+	const id = req.params.id;
+
+	if (!document) {
+		res.json({
+			status: 'error',
+			error: 'Data to update not provided. Send it as JSON in request body.',
+			data: null,
+		});
+		return;
+	}
+
+	try {
+		const db = await connect();
+		const result = await db.collection('locations').updateOne(
+			{ _id: new mongo.ObjectId(id) },
+			{ $set: document }
+		);
+
+		if (result.modifiedCount) {
+			res.json({
+				status: 'ok',
+				data: result,
+			});
+		} else {
+			res.json({
+				status: 'error',
+				error: 'Failed to update.',
+				data: result,
+			});
+		}
+	} catch (error) {
+		res.json({
+			status: 'error',
+			error: error,
+			data: null,
+		});
+	}
+});
+
+app.patch('/reservation/:id', async (req, res) => {
+	const document = req.body;
+	delete document._id;
+
+	const id = req.params.id;
+
+	if (!document) {
+		res.json({
+			status: 'error',
+			error: 'Data to update not provided. Send it as JSON in request body.',
+			data: null,
+		});
+		return;
+	}
+
+	try {
+		const db = await connect();
+		const result = await db.collection('reservations').updateOne(
+			{ _id: new mongo.ObjectId(id) },
+			{ $set: document }
+		);
+
+		if (result.modifiedCount) {
+			res.json({
+				status: 'ok',
+				data: result,
+			});
+		} else {
+			res.json({
+				status: 'error',
+				error: 'Failed to update.',
+				data: result,
+			});
+		}
+	} catch (error) {
+		res.json({
+			status: 'error',
+			error: error,
+			data: null,
+		});
+	}
+});
+
+app.patch('/wash-program/:id', async (req, res) => {
+	const document = req.body;
+	delete document._id;
+
+	const id = req.params.id;
+
+	if (!document) {
+		res.json({
+			status: 'error',
+			error: 'Data to update not provided. Send it as JSON in request body.',
+			data: null,
+		});
+		return;
+	}
+
+	try {
+		const db = await connect();
+		const result = await db.collection('washPrograms').updateOne(
+			{ _id: new mongo.ObjectId(id) },
+			{ $set: document }
+		);
+
+		if (result.modifiedCount) {
+			res.json({
+				status: 'ok',
+				data: result,
+			});
+		} else {
+			res.json({
+				status: 'error',
+				error: 'Failed to update.',
+				data: result,
+			});
+		}
+	} catch (error) {
+		res.json({
+			status: 'error',
+			error: error,
+			data: null,
+		});
+	}
+});
+
+app.patch('/wash-step/:id', async (req, res) => {
+	const document = req.body;
+	delete document._id;
+
+	const id = req.params.id;
+
+	if (!document) {
+		res.json({
+			status: 'error',
+			error: 'Data to update not provided. Send it as JSON in request body.',
+			data: null,
+		});
+		return;
+	}
+
+	try {
+		const db = await connect();
+		const result = await db.collection('washSteps').updateOne(
+			{ _id: new mongo.ObjectId(id) },
+			{ $set: document }
+		);
+
+		if (result.modifiedCount) {
+			res.json({
+				status: 'ok',
+				data: result,
+			});
+		} else {
+			res.json({
+				status: 'error',
+				error: 'Failed to update.',
+				data: result,
+			});
+		}
+	} catch (error) {
+		res.json({
+			status: 'error',
+			error: error,
+			data: null,
+		});
+	}
 });
 
 // Inserts.
