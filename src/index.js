@@ -49,6 +49,40 @@ app.post('/users', async (req, res) => {
 	});
 });
 
+// Protected route.
+app.get('/test', [auth.verify], (req, res) => {
+	res.send('OK');
+});
+
+app.post('/auth', async (req, res) => {
+	const document = req.body;
+
+	if (!document) {
+		res.json({
+			status: 'error',
+			error: 'Login data not provided (username and password). Send it as JSON in request body.',
+			data: null,
+		});
+		return;
+	}
+
+	try {
+		const userData = await auth.authenticateUser(document.username, document.password);
+		const result = userData;
+
+		res.json({
+			status: 'ok',
+			data: result,
+		});
+	} catch (error) {
+		res.status(401).json({
+			status: 'error',
+			error: error.message,
+			data: null,
+		});
+	}
+});
+
 // Deletes.
 app.delete('/user/:id', async (req, res) => {
 	const id = req.params.id;
