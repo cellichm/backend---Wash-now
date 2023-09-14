@@ -49,11 +49,6 @@ app.post('/users', async (req, res) => {
 	});
 });
 
-// Protected route.
-app.get('/test', [auth.verify], (req, res) => {
-	res.send('OK');
-});
-
 app.post('/auth', async (req, res) => {
 	const document = req.body;
 
@@ -84,7 +79,7 @@ app.post('/auth', async (req, res) => {
 });
 
 // Deletes.
-app.delete('/user/:id', async (req, res) => {
+app.delete('/user/:id', [auth.verify], async (req, res) => {
 	const id = req.params.id;
 
 	if (!id) {
@@ -123,7 +118,7 @@ app.delete('/user/:id', async (req, res) => {
 	}
 });
 
-app.delete('/location/:id', async (req, res) => {
+app.delete('/location/:id', [auth.verify], async (req, res) => {
 	const id = req.params.id;
 
 	if (!id) {
@@ -162,7 +157,7 @@ app.delete('/location/:id', async (req, res) => {
 	}
 });
 
-app.delete('/reservation/:id', async (req, res) => {
+app.delete('/reservation/:id', [auth.verify], async (req, res) => {
 	const id = req.params.id;
 
 	if (!id) {
@@ -201,7 +196,7 @@ app.delete('/reservation/:id', async (req, res) => {
 	}
 });
 
-app.delete('/wash-program/:id', async (req, res) => {
+app.delete('/wash-program/:id', [auth.verify], async (req, res) => {
 	const id = req.params.id;
 
 	if (!id) {
@@ -240,7 +235,7 @@ app.delete('/wash-program/:id', async (req, res) => {
 	}
 });
 
-app.delete('/wash-step/:id', async (req, res) => {
+app.delete('/wash-step/:id', [auth.verify], async (req, res) => {
 	const id = req.params.id;
 
 	if (!id) {
@@ -280,7 +275,7 @@ app.delete('/wash-step/:id', async (req, res) => {
 });
 
 // Patches.
-app.patch('/user/:id', async (req, res) => {
+app.patch('/user/:id', [auth.verify], async (req, res) => {
 	const document = req.body;
 	delete document._id;
 
@@ -323,7 +318,7 @@ app.patch('/user/:id', async (req, res) => {
 	}
 });
 
-app.patch('/location/:id', async (req, res) => {
+app.patch('/location/:id', [auth.verify], async (req, res) => {
 	const document = req.body;
 	delete document._id;
 
@@ -366,7 +361,7 @@ app.patch('/location/:id', async (req, res) => {
 	}
 });
 
-app.patch('/reservation/:id', async (req, res) => {
+app.patch('/reservation/:id', [auth.verify], async (req, res) => {
 	const document = req.body;
 	delete document._id;
 
@@ -409,7 +404,7 @@ app.patch('/reservation/:id', async (req, res) => {
 	}
 });
 
-app.patch('/wash-program/:id', async (req, res) => {
+app.patch('/wash-program/:id', [auth.verify], async (req, res) => {
 	const document = req.body;
 	delete document._id;
 
@@ -452,7 +447,7 @@ app.patch('/wash-program/:id', async (req, res) => {
 	}
 });
 
-app.patch('/wash-step/:id', async (req, res) => {
+app.patch('/wash-step/:id', [auth.verify], async (req, res) => {
 	const document = req.body;
 	delete document._id;
 
@@ -496,7 +491,7 @@ app.patch('/wash-step/:id', async (req, res) => {
 });
 
 // Inserts.
-app.post('/locations', async (req, res) => {
+app.post('/locations', [auth.verify], async (req, res) => {
 	const document = req.body;
 
 	if (!document) {
@@ -535,7 +530,7 @@ app.post('/locations', async (req, res) => {
 	}
 });
 
-app.post('/reservations', async (req, res) => {
+app.post('/reservations', [auth.verify], async (req, res) => {
 	const document = req.body;
 
 	if (!document) {
@@ -574,7 +569,7 @@ app.post('/reservations', async (req, res) => {
 	}
 });
 
-app.post('/wash-programs', async (req, res) => {
+app.post('/wash-programs', [auth.verify], async (req, res) => {
 	const document = req.body;
 
 	if (!document) {
@@ -613,7 +608,7 @@ app.post('/wash-programs', async (req, res) => {
 	}
 });
 
-app.post('/wash-steps', async (req, res) => {
+app.post('/wash-steps', [auth.verify], async (req, res) => {
 	const document = req.body;
 
 	if (!document) {
