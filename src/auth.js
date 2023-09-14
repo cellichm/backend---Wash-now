@@ -32,7 +32,7 @@ export default {
 
 			if (user && user.password && (await bcyrpt.compare(password, user.password))) {
 				delete user.password;
-				const token = jwt.sign(user, 'secret', {
+				const token = jwt.sign(user, process.env.JWT_SECRET, {
 					algorithm: 'HS512',
 					expiresIn: '1 week',
 				});
@@ -59,7 +59,7 @@ export default {
 
 			const token = receivedToken[1];
 
-			req.jwt = jwt.verify(token, 'secret');
+			req.jwt = jwt.verify(token, process.env.JWT_SECRET);
 
 			return next();
 		} catch (error) {
